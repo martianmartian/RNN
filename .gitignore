@@ -1,0 +1,6 @@
+tutorial_learn
+__pycache__
+*.pyc
+RNN_Net/net_input_X/blogs
+RNN_Net/net_input_X/blogs_data-master
+RNN_Net/net_input_X/shakespeare/tiny-shakespeare.txt
