@@ -1,3 +1,5 @@
+.DS_Store
+papers_notes
 tutorial_learn
 __pycache__
 *.pyc
