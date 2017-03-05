@@ -46,6 +46,9 @@ def gen_batch(raw_data, batch_size, num_steps):
         y = data_y[:, i * num_steps:(i + 1) * num_steps]
         yield (x, y)
 
-def gen_bin_seq_epochs(n, num_steps):
-    for i in range(n):
+def gen_bin_seq_epochs(num_epochs, num_steps,batch_size):
+    for i in range(num_epochs):
         yield gen_batch(gen_data(), batch_size, num_steps)
+
+# def get_data_info():
+#   return gen_bin_seq_epochs, chars_size, idx_to_chars, chars_to_idx

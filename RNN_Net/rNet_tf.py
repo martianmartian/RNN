@@ -7,7 +7,7 @@ def reset_graph():
     tf.reset_default_graph()
 
 def train_network(g, gen_epochs, num_epochs=1, num_steps=200, batch_size=32, verbose=True, save=False):
-    tf.set_random_seed(2345)
+    tf.set_random_seed(0)
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         training_losses = []
@@ -17,7 +17,7 @@ def train_network(g, gen_epochs, num_epochs=1, num_steps=200, batch_size=32, ver
             training_state = None
             for X, Y in epoch:
                 steps += 1
-
+                # print('X.shape==> ',X.shape)
                 feed_dict={g['x']: X, g['y']: Y}
                 if training_state is not None:
                     feed_dict[g['init_state']] = training_state

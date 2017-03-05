@@ -43,12 +43,16 @@ def ptb_iterator(raw_data, batch_size, num_steps):
   for i in range(epoch_size):
     x = data[:, i*num_steps:(i+1)*num_steps]
     y = data[:, i*num_steps+1:(i+1)*num_steps+1] # y is one step forward than x.
-    # print('x==>',x)
+    print('x.shape==>',x.shape)
+    print('x==>',x)
+    print('x_word==>\n',[idx_to_chars[i] for i in x[0]])
+    # print('x_word==>\n',[idx_to_chars[i] for i in x[1]])
+    # print('x_word==>\n',[idx_to_chars[i] for i in x[2]])
     # print('y==>',y)
     yield (x, y)
 
-def gen_shakespeare_epochs(n, num_steps, batch_size):
-  for i in range(n):
+def gen_shakespeare_epochs(num_epochs, num_steps, batch_size):
+  for i in range(num_epochs):
     yield ptb_iterator(data, batch_size, num_steps)
 
 def get_data_info():
