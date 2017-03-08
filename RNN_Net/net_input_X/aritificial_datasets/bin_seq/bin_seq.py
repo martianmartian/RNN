@@ -26,38 +26,15 @@ def gen_data(size=1000000):
             Y.append(1)
     return X, np.array(Y)
 
-# adapted from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/models/rnn/ptb/reader.py
 def gen_batch(raw_data, batch_size, num_steps):
     raw_x, raw_y = raw_data
-    data_length = len(raw_x)
+    data_x = np.stack(np.vsplit(raw_x.reshape((-1,num_steps)),batch_size),axis=2)
+    data_y = np.stack(np.vsplit(raw_y.reshape((-1,num_steps)),batch_size),axis=2)
+    print(data_x.shape)
 
-    # partition raw data into batches
-    # stack them vertically in a data matrix
-    n_of_total_batches = data_length // batch_size
-    print('n_of_total_batches: ',n_of_total_batches)
-    print('batch_size: ',batch_size)
-    data_x = np.zeros([batch_size, n_of_total_batches], dtype=np.int32)
-    data_y = np.zeros([batch_size, n_of_total_batches], dtype=np.int32)
-    print('raw_x[0:15]: ',raw_x[0:15])
-    print('raw_x[199:199+15]: ',raw_x[199:199+15])
-    for i in range(batch_size):
-        print(n_of_total_batches * i,n_of_total_batches * (i + 1))
-        data_x[i] = raw_x[n_of_total_batches * i:n_of_total_batches * (i + 1)]
-        data_y[i] = raw_y[n_of_total_batches * i:n_of_total_batches * (i + 1)]
-    print('data_x[0][0:15]: ',data_x[0][0:15])
-    print('data_x[0][199:199+15]: ',data_x[0][199:199+15])
-    # for i in range(n_of_total_batches):
-    #     data_x[:,i] = raw_x[i*batch_size:(i+1)*batch_size]
-    #     data_y[:,i] = raw_y[i*batch_size:(i+1)*batch_size]
-    # print('data_x[0][0:15]: ',data_x[0][0:15])
-    # print('data_x[0][199:199+15]: ',data_x[0][199:199+15],'\n')
-    # further divide batch partitions into num_steps for truncated backprop
-    epoch_size = n_of_total_batches // num_steps
-
-    for i in range(epoch_size):
-        x = data_x[:, i * num_steps:(i + 1) * num_steps]
-        y = data_y[:, i * num_steps:(i + 1) * num_steps]
-        yield (x, y)
+    for i in range(data_x.shape[0]):
+        # print('data_x[i].shape: ',data_x[i].shape)
+        yield (data_x[i].T,data_y[i].T)
 
 def gen_bin_seq_epochs(num_epochs, num_steps,batch_size):
     for i in range(num_epochs):
