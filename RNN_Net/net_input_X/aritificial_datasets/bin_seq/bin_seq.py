@@ -31,15 +31,28 @@ def gen_batch(raw_data, batch_size, num_steps):
     raw_x, raw_y = raw_data
     data_length = len(raw_x)
 
-    # partition raw data into batches and stack them vertically in a data matrix
-    batch_partition_length = data_length // batch_size
-    data_x = np.zeros([batch_size, batch_partition_length], dtype=np.int32)
-    data_y = np.zeros([batch_size, batch_partition_length], dtype=np.int32)
+    # partition raw data into batches
+    # stack them vertically in a data matrix
+    n_of_total_batches = data_length // batch_size
+    print('n_of_total_batches: ',n_of_total_batches)
+    print('batch_size: ',batch_size)
+    data_x = np.zeros([batch_size, n_of_total_batches], dtype=np.int32)
+    data_y = np.zeros([batch_size, n_of_total_batches], dtype=np.int32)
+    print('raw_x[0:15]: ',raw_x[0:15])
+    print('raw_x[199:199+15]: ',raw_x[199:199+15])
     for i in range(batch_size):
-        data_x[i] = raw_x[batch_partition_length * i:batch_partition_length * (i + 1)]
-        data_y[i] = raw_y[batch_partition_length * i:batch_partition_length * (i + 1)]
+        print(n_of_total_batches * i,n_of_total_batches * (i + 1))
+        data_x[i] = raw_x[n_of_total_batches * i:n_of_total_batches * (i + 1)]
+        data_y[i] = raw_y[n_of_total_batches * i:n_of_total_batches * (i + 1)]
+    print('data_x[0][0:15]: ',data_x[0][0:15])
+    print('data_x[0][199:199+15]: ',data_x[0][199:199+15])
+    # for i in range(n_of_total_batches):
+    #     data_x[:,i] = raw_x[i*batch_size:(i+1)*batch_size]
+    #     data_y[:,i] = raw_y[i*batch_size:(i+1)*batch_size]
+    # print('data_x[0][0:15]: ',data_x[0][0:15])
+    # print('data_x[0][199:199+15]: ',data_x[0][199:199+15],'\n')
     # further divide batch partitions into num_steps for truncated backprop
-    epoch_size = batch_partition_length // num_steps
+    epoch_size = n_of_total_batches // num_steps
 
     for i in range(epoch_size):
         x = data_x[:, i * num_steps:(i + 1) * num_steps]

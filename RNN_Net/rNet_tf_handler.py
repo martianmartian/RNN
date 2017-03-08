@@ -48,9 +48,6 @@ g = build_multilayer_lstm_graph_with_dynamic_rnn(
 print("It took", time.time() - t, "seconds to build the graph.")
 training_losses = train_network(g,gen_epochs,num_epochs=3,num_steps=5, batch_size=200, verbose=True, save=False)
 
-
-
-
 # # '''========= ======== ===================='''
 # # '''========= plotting ===================='''
 # # '''========= ======== ===================='''
