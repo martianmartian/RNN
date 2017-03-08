@@ -131,7 +131,6 @@ def build_multilayer_lstm_graph_with_dynamic_rnn(
 		learning_rate = 1e-4,
 		resetgraph=False):
 
-
 		if resetgraph==True:
 				reset_graph()
 

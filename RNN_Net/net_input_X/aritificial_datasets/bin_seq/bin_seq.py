@@ -26,7 +26,7 @@ def gen_data(size=1000000):
             Y.append(1)
     return X, np.array(Y)
 
-def gen_batch(raw_data, batch_size, num_steps):
+def gen_batch(raw_data, num_steps,batch_size):
     raw_x, raw_y = raw_data
     data_x = np.stack(np.vsplit(raw_x.reshape((-1,num_steps)),batch_size),axis=2)
     data_y = np.stack(np.vsplit(raw_y.reshape((-1,num_steps)),batch_size),axis=2)
@@ -38,7 +38,4 @@ def gen_batch(raw_data, batch_size, num_steps):
 
 def gen_bin_seq_epochs(num_epochs, num_steps,batch_size):
     for i in range(num_epochs):
-        yield gen_batch(gen_data(), batch_size, num_steps)
-
-# def get_data_info():
-#   return gen_bin_seq_epochs, chars_size, idx_to_chars, chars_to_idx
+        yield gen_batch(gen_data(), num_steps,batch_size)

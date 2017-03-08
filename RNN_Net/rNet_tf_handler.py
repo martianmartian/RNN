@@ -22,10 +22,11 @@ import tensorflow as tf
 # # '''========= ======== ===================='''
 # # '''========= data setup by switching ====='''
 # # '''========= ======== ===================='''
-from net_input_X.aritificial_datasets.bin_seq.bin_seq import gen_bin_seq_epochs as gen_epochs
-chars_size=2
-# from net_input_X.shakespeare.shakespeare import get_data_info
-# gen_epochs, chars_size, idx_to_chars, chars_to_idx = get_data_info() 
+# # from net_input_X.aritificial_datasets.bin_seq.bin_seq_1 import gen_bin_seq_epochs as gen_epochs
+# from net_input_X.aritificial_datasets.bin_seq.bin_seq import gen_bin_seq_epochs as gen_epochs
+# chars_size=2
+from net_input_X.shakespeare.shakespeare import get_data_info
+gen_epochs, chars_size, idx_to_chars, chars_to_idx = get_data_info() 
 
 
 # # '''========= ======== ===================='''
@@ -41,12 +42,12 @@ from rNet_tf import build_multilayer_lstm_graph_with_dynamic_rnn
 g = build_multilayer_lstm_graph_with_dynamic_rnn(
 	state_size=10,
 	num_classes=chars_size,
-	batch_size=200,
-	num_steps=5,
+	batch_size=100,
+	num_steps=10,
 	learning_rate=0.05,
 	resetgraph=True)
-training_losses = train_network(g,gen_epochs,num_epochs=3,num_steps=5, batch_size=200, verbose=True, save=False)
-print("It took", time.time() - t, "seconds to build the graph.")
+training_losses = train_network(g,gen_epochs,num_epochs=3,num_steps=10, batch_size=100, verbose=True, save=False)
+print("It took", time.time() - t, "seconds to complete.")
 
 # # '''========= ======== ===================='''
 # # '''========= plotting ===================='''
