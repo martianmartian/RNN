@@ -168,3 +168,58 @@ def build_multilayer_lstm_graph_with_dynamic_rnn(
 			total_loss = total_loss,
 			train_step = train_step
 		)
+
+def build_multilayer_lstm_graph_with_scan(
+    state_size = 100,
+    num_classes = 20,
+    batch_size = 32,
+    num_steps = 200,
+    num_layers = 3,
+    learning_rate = 1e-4,
+    resetgraph=False):
+
+    reset_graph()
+
+    x = tf.placeholder(tf.int32, [batch_size, num_steps], name='input_placeholder')
+    y = tf.placeholder(tf.int32, [batch_size, num_steps], name='labels_placeholder')
+
+    embeddings = tf.get_variable('embedding_matrix', [num_classes, state_size])
+
+    rnn_inputs = tf.nn.embedding_lookup(embeddings, x)
+
+    cell = tf.nn.rnn_cell.LSTMCell(state_size, state_is_tuple=True)
+    cell = tf.nn.rnn_cell.MultiRNNCell([cell] * num_layers, state_is_tuple=True)
+    init_state = cell.zero_state(batch_size, tf.float32)
+    rnn_outputs, final_states = \
+        tf.scan(lambda a, x: cell(x, a[1]),
+                tf.transpose(rnn_inputs, [1,0,2]),
+                initializer=(tf.zeros([batch_size, state_size]), init_state))
+
+    # there may be a better way to do this:
+    final_state = tuple([tf.nn.rnn_cell.LSTMStateTuple(
+                  tf.squeeze(tf.slice(c, [num_steps-1,0,0], [1, batch_size, state_size])),
+                  tf.squeeze(tf.slice(h, [num_steps-1,0,0], [1, batch_size, state_size])))
+                       for c, h in final_states])
+
+    with tf.variable_scope('softmax'):
+        W = tf.get_variable('W', [state_size, num_classes])
+        b = tf.get_variable('b', [num_classes], initializer=tf.constant_initializer(0.0))
+
+    rnn_outputs = tf.reshape(rnn_outputs, [-1, state_size])
+    y_reshaped = tf.reshape(tf.transpose(y,[1,0]), [-1])
+
+    logits = tf.matmul(rnn_outputs, W) + b
+
+    total_loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits, y_reshaped))
+    train_step = tf.train.AdamOptimizer(learning_rate).minimize(total_loss)
+
+    return dict(
+        x = x,
+        y = y,
+        init_state = init_state,
+        final_state = final_state,
+        total_loss = total_loss,
+        train_step = train_step
+    )
+
+

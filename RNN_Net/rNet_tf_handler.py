@@ -34,12 +34,14 @@ gen_epochs, chars_size, idx_to_chars, chars_to_idx = get_data_info()
 # # '''========= ======== ===================='''
 from rNet_tf import train_network
 t = time.time()
-# from rNet_tf import build_multilayer_lstm_graph_with_list
-# g = build_multilayer_lstm_graph_with_list(
-# from rNet_tf import build_basic_rnn_graph_with_list
-# g = build_basic_rnn_graph_with_list(
-from rNet_tf import build_multilayer_lstm_graph_with_dynamic_rnn
-g = build_multilayer_lstm_graph_with_dynamic_rnn(
+# # from rNet_tf import build_multilayer_lstm_graph_with_list
+# # g = build_multilayer_lstm_graph_with_list(
+# # from rNet_tf import build_basic_rnn_graph_with_list
+# # g = build_basic_rnn_graph_with_list(
+# from rNet_tf import build_multilayer_lstm_graph_with_dynamic_rnn
+# g = build_multilayer_lstm_graph_with_dynamic_rnn(
+from rNet_tf import build_multilayer_lstm_graph_with_scan
+g= build_multilayer_lstm_graph_with_scan(
 	state_size=10,
 	num_classes=chars_size,
 	batch_size=100,
