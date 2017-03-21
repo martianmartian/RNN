@@ -11,7 +11,7 @@ print("- learns first dependency:  ",
 print("- learns both dependencies: ", -0.50 * (0.75 * np.log(0.75) + 0.25 * np.log(0.25))
       - 0.25 * (2 * 0.50 * np.log (0.50)) - 0.25 * (0))
 
-def gen_data(size=1000000):
+def new_data(size=1000000):
     X = np.array(np.random.choice(2, size=(size,)))
     Y = []
     for i in range(size):
@@ -30,12 +30,12 @@ def gen_batch(raw_data, num_steps,batch_size):
     raw_x, raw_y = raw_data
     data_x = np.stack(np.vsplit(raw_x.reshape((-1,num_steps)),batch_size),axis=2)
     data_y = np.stack(np.vsplit(raw_y.reshape((-1,num_steps)),batch_size),axis=2)
-    print(data_x.shape)
+    print('data_x.shape: ',data_x.shape)
 
-    for i in range(data_x.shape[0]):
-        # print('data_x[i].shape: ',data_x[i].shape)
+    print('data_x[0][0][0:10]: ',data_x[0][0][0:10])
+    for i in range(data_x.shape[0]): # each bactch is one loop
         yield (data_x[i].T,data_y[i].T)
 
 def gen_bin_seq_epochs(num_epochs, num_steps,batch_size):
     for i in range(num_epochs):
-        yield gen_batch(gen_data(), num_steps,batch_size)
+        yield gen_batch(new_data(), num_steps,batch_size)

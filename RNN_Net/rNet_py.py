@@ -166,7 +166,6 @@ class RNNNumpy:
         wlist = [index_to_word[i] for i in [np.argmax(w[0]) for w in wout]]
         return wlist
 
-
     def gradient_check(self, x, y, h=0.001, error_threshold=0.01):
         # Calculate the gradients using backpropagation. We want to checker if these are correct.
         bptt_gradients = self.bptt(x, y)

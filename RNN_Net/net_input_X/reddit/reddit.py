@@ -5,7 +5,7 @@ import nltk
 
 
 f_loc = '/Users/martian2049/Desktop/NN:AI/RNN/RNN_Net/net_input_X/reddit/'
-f_names = ['small.csv','test.csv','tiny.csv','reddit-comments-2015-08.csv']
+f_names = ['small.csv','test.csv','tiny.csv','reddit-comments-2015-08.csv','python.csv']
 f_name = f_loc + f_names[2]
 
 
@@ -16,9 +16,10 @@ sentence_end_token = "SENTENCE_END"
 
 
 
-def get_data_info(verbose=False, veryverbose=False):
+def get_data_info(verbose=True, veryverbose=False):
 	with open(f_name, newline='\n') as csvfile:
 	    csvreader = csv.reader(csvfile)
+	    # print(csvreader)
 	    sentences = itertools.chain(*[nltk.sent_tokenize(x[0].lower()) for x in csvreader])
 	    sentences = ["%s %s %s" % (sentence_start_token, x, sentence_end_token) for x in sentences]
 	    if veryverbose: print('sentences[:3]\n: ',sentences[:3])
@@ -28,7 +29,7 @@ def get_data_info(verbose=False, veryverbose=False):
 
 	word_freq = nltk.FreqDist(itertools.chain(*tokenized_sentences))
 	if verbose: print ("\nFound %d unique words tokens." % len(word_freq.items()))
-
+ 
 	# Get the most common words and build index_to_word and word_to_index vectors
 	vocab = word_freq.most_common(vocabulary_size-1)
 	if veryverbose: print("\nExample of vocab is: ",vocab[:3])

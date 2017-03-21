@@ -22,12 +22,11 @@ import tensorflow as tf
 # # '''========= ======== ===================='''
 # # '''========= data setup by switching ====='''
 # # '''========= ======== ===================='''
-# # from net_input_X.aritificial_datasets.bin_seq.bin_seq_1 import gen_bin_seq_epochs as gen_epochs
-# from net_input_X.aritificial_datasets.bin_seq.bin_seq import gen_bin_seq_epochs as gen_epochs
-# chars_size=2
-from net_input_X.shakespeare.shakespeare import get_data_info
-gen_epochs, chars_size, idx_to_chars, chars_to_idx = get_data_info() 
-
+# from net_input_X.aritificial_datasets.bin_seq.bin_seq_1 import gen_bin_seq_epochs as gen_epochs
+from net_input_X.aritificial_datasets.bin_seq.bin_seq import gen_bin_seq_epochs as gen_epochs
+chars_size=2
+# from net_input_X.shakespeare.shakespeare import get_data_info
+# gen_epochs, chars_size, idx_to_chars, chars_to_idx = get_data_info() 
 
 
 # # '''========= ======== ===================='''
